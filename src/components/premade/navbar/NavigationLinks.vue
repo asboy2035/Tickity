@@ -7,8 +7,26 @@
   <h-stack>
     <NavigationButton
       link="/"
-      icon="solar:question-square-line-duotone"
-      text="No Navigation Links"
+      icon="solar:clock-circle-line-duotone"
+      text="Tickity"
+    />
+
+    <NavigationButton
+      link="/map"
+      icon="solar:map-line-duotone"
+      text="Map"
+    />
+
+    <NavigationButton 
+      link="/timers" 
+      icon="solar:hourglass-line-line-duotone"
+      text="Timers" 
+    />
+    
+    <NavigationButton
+      link="/settings"
+      icon="solar:settings-line-duotone"
+      text="Settings"
     />
   </h-stack>
 </template>
