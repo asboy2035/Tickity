@@ -1,7 +1,6 @@
-
 <script setup lang="ts">
   import InteriorItem from '@/components/layout/InteriorItem.vue'
-  import { ref } from 'vue'
+  import { onMounted, onUnmounted, ref } from 'vue'
   import type { Clock } from '@/stores/clocks'
   import { Icon } from '@iconify/vue'
   import HStack from '@/components/layout/HStack.vue'
@@ -12,7 +11,23 @@
 
   const emit = defineEmits(['delete'])
 
-  const time = ref<number>(1200) // This seems to be a placeholder, I'll leave it for now.
+  const time = ref<string>('--:--:--')
+  let interval: number
+
+  onMounted(() => {
+    const update = () => {
+      const now = new Date()
+      const utcTime = now.getTime() + now.getTimezoneOffset() * 60000
+      const cityTime = new Date(utcTime + props.clock.gmtOffset * 3600000)
+      time.value = cityTime.toLocaleTimeString('en-GB')
+    }
+    update()
+    interval = setInterval(update, 1000)
+  })
+
+  onUnmounted(() => {
+    clearInterval(interval)
+  })
 
   function deleteClock() {
     emit('delete', props.clock)

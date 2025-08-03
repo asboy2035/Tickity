@@ -1,5 +1,3 @@
-
-
 <script setup lang="ts">
   import ContentView from '@/components/navigation/ContentView.vue'
   import NavigationTitle from '@/components/navigation/NavigationTitle.vue'
@@ -13,6 +11,7 @@
   import VStack from '@/components/layout/VStack.vue'
   import HStack from '@/components/layout/HStack.vue'
   import { Icon } from '@iconify/vue'
+  import InteriorItem from '@/components/layout/InteriorItem.vue'
 
   const userStore = useUserStore()
   const isModalOpen = ref(false)
@@ -25,24 +24,24 @@
     { title: 'Long Break', duration: 15 * 60 },
   ]
 
-  let timerInterval: number | undefined;
+  let timerInterval: number | undefined
 
   onMounted(() => {
     timerInterval = setInterval(() => {
-      userStore.updateTimers();
+      userStore.updateTimers()
       userStore.timers.forEach(timer => {
         if (timer.remaining === 0 && timer.isRunning) {
-          new Notification('Tickity', { body: `Timer "${timer.title}" has finished!` });
-          userStore.pauseTimer(timer.id);
+          new Notification('Tickity', { body: `Timer "${timer.title}" has finished!` })
+          userStore.pauseTimer(timer.id)
         }
-      });
-    }, 1000);
-    Notification.requestPermission();
-  });
+      })
+    }, 1000)
+    Notification.requestPermission()
+  })
 
   onUnmounted(() => {
-    clearInterval(timerInterval);
-  });
+    clearInterval(timerInterval)
+  })
 
   function addTimer(title: string, duration: number) {
     userStore.addTimer(title, duration)
@@ -76,63 +75,56 @@
     </Modal>
 
     <Card v-if="userStore.timers.length > 0">
-      <CardTitle title="Running Timers" icon="solar:hourglass-line-duotone" />
+      <CardTitle
+        title="Running Timers"
+        icon="solar:hourglass-line-duotone"
+      />
+
       <VStack>
-        <HStack v-for="timer in userStore.timers" :key="timer.id">
-          <span>{{ timer.title }}</span>
-          <span>{{ Math.floor(timer.remaining / 60) }}:{{ ('0' + (timer.remaining % 60)).slice(-2) }}</span>
-          <button @click="userStore.startTimer(timer.id)" v-if="!timer.isRunning">
-            <Icon icon="solar:play-circle-line-duotone" />
-          </button>
-          <button @click="userStore.pauseTimer(timer.id)" v-if="timer.isRunning">
-            <Icon icon="solar:pause-circle-line-duotone" />
-          </button>
-          <button @click="userStore.removeTimer(timer.id)">
-            <Icon icon="solar:close-circle-line-duotone" />
-          </button>
-        </HStack>
+        <InteriorItem
+          v-for="timer in userStore.timers"
+          :key="timer.id"
+        >
+          <h3>
+            {{ timer.title }}
+            {{ Math.floor(timer.remaining / 60) }}:{{ ('0' + (timer.remaining % 60)).slice(-2) }}
+          </h3>
+
+          <HStack>
+            <button @click="userStore.startTimer(timer.id)" v-if="!timer.isRunning">
+              <Icon icon="solar:play-line-duotone" />
+            </button>
+
+            <button @click="userStore.pauseTimer(timer.id)" v-if="timer.isRunning">
+              <Icon icon="solar:pause-line-duotone" />
+            </button>
+
+            <button @click="userStore.removeTimer(timer.id)">
+              <Icon icon="solar:trash-bin-minimalistic-line-duotone" />
+            </button>
+          </HStack>
+        </InteriorItem>
       </VStack>
     </Card>
 
     <Card>
-      <CardTitle title="Presets" icon="solar:checklist-minimalistic-line-duotone" />
-      <Grid>
-        <Card
+      <CardTitle
+        title="Presets"
+        icon="solar:checklist-minimalistic-line-duotone"
+      />
+
+      <Grid class="spaced">
+        <InteriorItem
           v-for="preset in presets"
           :key="preset.title"
           @click="addTimer(preset.title, preset.duration)"
         >
-          <VStack>
-            <CardTitle
-              :title="preset.title"
-              icon="solar:settings-line-duotone"
-            />
-            <span>{{ preset.duration / 60 }} minutes</span>
-          </VStack>
-        </Card>
+          <p class="light">{{ preset.title }}</p>
+          <h2>{{ preset.duration / 60 }} minutes</h2>
+        </InteriorItem>
       </Grid>
     </Card>
 
     <NavBar />
   </ContentView>
 </template>
-
-<style scoped lang="sass">
-.modal-content
-  padding: 1rem
-  gap: 1rem
-
-  input
-    padding: 0.5rem
-    border-radius: 0.5rem
-    border: 1px solid var(--color-border)
-
-  button
-    background-color: var(--color-primary)
-    color: var(--color-text-inverted)
-    border: none
-    padding: 0.5rem 1rem
-    border-radius: 0.5rem
-    cursor: pointer
-</style>
-
