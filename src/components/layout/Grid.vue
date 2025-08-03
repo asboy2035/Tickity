@@ -15,7 +15,7 @@
       display: inline-flex
 
     &.tight
-      grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr))
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr))
       width: 100%
 
       .card

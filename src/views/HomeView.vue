@@ -85,7 +85,7 @@
         icon="solar:cloud-line-duotone"
       />
 
-      <Grid>
+      <Grid class="spaced tight">
         <ClockCard
           v-for="clock in continentClocks"
           :key="clock.name"
