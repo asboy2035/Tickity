@@ -5,8 +5,9 @@
   import createGlobe from 'cobe'
   import { onMounted, ref, watch } from 'vue'
   import Card from '@/components/layout/Card.vue'
-  import RunningTimers from '@/components/premade/RunningTimers.vue';
+  import RunningTimers from '@/components/premade/RunningTimers.vue'
   import { useUserStore } from '@/stores/user'
+  import type {Clock} from '@/stores/clocks.ts'
 
   const canvasRef = ref<HTMLCanvasElement | null>(null)
   const isDarkMode = ref(0)
@@ -29,7 +30,7 @@
     const width = canvas.offsetWidth * devicePixelRatio
     const height = canvas.offsetHeight * devicePixelRatio
 
-    const markers = userStore.enabledClocks.map(clock => ({
+    const markers = userStore.enabledClocks.map((clock: Clock) => ({
       location: [clock.coordinates.lat, clock.coordinates.lon] as [number, number],
       size: 0.1,
     }))

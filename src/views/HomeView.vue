@@ -14,8 +14,7 @@
   import Modal from '@/components/layout/Modal.vue'
   import { useClocksStore } from '@/stores/clocks'
   import HStack from '@/components/layout/HStack.vue'
-
-  import RunningTimers from '@/components/premade/RunningTimers.vue';
+  import RunningTimers from '@/components/premade/RunningTimers.vue'
 
   const userStore = useUserStore()
   const clocksStore = useClocksStore()
@@ -34,7 +33,7 @@
 
   const availableClocks = computed(() => {
     return clocksStore.clocks.filter(clock => {
-      return !userStore.enabledClocks.some(enabledClock => enabledClock.name === clock.name)
+      return !userStore.enabledClocks.some((enabledClock: Clock) => enabledClock.name === clock.name)
     })
   })
 
