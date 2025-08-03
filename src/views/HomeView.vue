@@ -15,6 +15,8 @@
   import { useClocksStore } from '@/stores/clocks'
   import HStack from '@/components/layout/HStack.vue'
 
+  import RunningTimers from '@/components/premade/RunningTimers.vue';
+
   const userStore = useUserStore()
   const clocksStore = useClocksStore()
   const isModalOpen = ref(false)
@@ -52,6 +54,8 @@
         <Icon icon="solar:pen-new-square-line-duotone" />
       </button>
     </NavigationTitle>
+
+    <RunningTimers />
 
     <Modal v-if="isModalOpen" @click="isModalOpen = false">
       <CardTitle title="Add a Clock" icon="solar:clock-circle-line-duotone" />

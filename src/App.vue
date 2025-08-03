@@ -1,5 +1,9 @@
 <script setup lang="ts">
-  import {ProgressiveBlur} from 'vue-progressive-blur'
+  import { ProgressiveBlur } from 'vue-progressive-blur'
+  import { useUserStore } from '@/stores/user'
+
+  const userStore = useUserStore()
+  userStore.initializeTimers()
 </script>
 
 <template>

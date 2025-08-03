@@ -3,6 +3,7 @@
   import ContentView from '@/components/navigation/ContentView.vue'
   import NavigationTitle from '@/components/navigation/NavigationTitle.vue'
   import NavBar from '@/components/premade/navbar/NavBar.vue'
+  import RunningTimers from '@/components/premade/RunningTimers.vue';
   import { useUserStore } from '@/stores/user'
   import Card from '@/components/layout/Card.vue'
   import CardTitle from '@/components/layout/CardTitle.vue'
@@ -19,6 +20,8 @@
 <template>
   <ContentView>
     <NavigationTitle title="Settings" />
+
+    <RunningTimers />
 
     <Card>
       <CardTitle title="Data Management" icon="solar:database-line-duotone" />

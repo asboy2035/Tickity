@@ -15,7 +15,25 @@ export const useUserStore = defineStore('user', {
     timers: [] as Timer[],
   }),
   
+  getters: {
+    runningTimers(): Timer[] {
+      return this.timers.filter(t => t.isRunning)
+    },
+  },
+
   actions: {
+    initializeTimers() {
+      setInterval(() => {
+        this.updateTimers()
+        this.timers.forEach(timer => {
+          if (timer.remaining === 0 && timer.isRunning) {
+            new Notification('Tickity', { body: `Timer "${timer.title}" has finished!` })
+            this.pauseTimer(timer.id)
+          }
+        })
+      }, 1000)
+      Notification.requestPermission()
+    },
     addClock(clock: Clock) {
       if (!this.enabledClocks.find(c => c.name === clock.name)) {
         this.enabledClocks.push(clock)

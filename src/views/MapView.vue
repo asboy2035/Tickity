@@ -5,6 +5,7 @@
   import createGlobe from 'cobe'
   import { onMounted, ref, watch } from 'vue'
   import Card from '@/components/layout/Card.vue'
+  import RunningTimers from '@/components/premade/RunningTimers.vue';
   import { useUserStore } from '@/stores/user'
 
   const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -29,7 +30,7 @@
     const height = canvas.offsetHeight * devicePixelRatio
 
     const markers = userStore.enabledClocks.map(clock => ({
-      location: [clock.coordinates.lat, clock.coordinates.lon],
+      location: [clock.coordinates.lat, clock.coordinates.lon] as [number, number],
       size: 0.1,
     }))
 
@@ -116,7 +117,9 @@
   <ContentView class="mapView">
     <NavigationTitle title="Map" />
 
-    <Card>
+    <RunningTimers />
+
+    <Card class="globeCard">
       <canvas ref="canvasRef" id="globe" />
     </Card>
 
@@ -125,8 +128,11 @@
 </template>
 
 <style scoped lang="sass">
-  #globe
-    width: 100%
-    height: 100%
-    flex-grow: 1
+  .globeCard
+    height: 90vh
+
+    #globe
+      width: 100%
+      height: 100%
+      flex-grow: 1
 </style>

@@ -2,11 +2,12 @@
   import ContentView from '@/components/navigation/ContentView.vue'
   import NavigationTitle from '@/components/navigation/NavigationTitle.vue'
   import NavBar from '@/components/premade/navbar/NavBar.vue'
+  import RunningTimers from '@/components/premade/RunningTimers.vue';
   import { useUserStore } from '@/stores/user'
   import Card from '@/components/layout/Card.vue'
   import CardTitle from '@/components/layout/CardTitle.vue'
   import Grid from '@/components/layout/Grid.vue'
-  import { onMounted, onUnmounted, ref } from 'vue'
+  import { ref } from 'vue'
   import Modal from '@/components/layout/Modal.vue'
   import VStack from '@/components/layout/VStack.vue'
   import HStack from '@/components/layout/HStack.vue'
@@ -23,25 +24,6 @@
     { title: 'Short Break', duration: 5 * 60 },
     { title: 'Long Break', duration: 15 * 60 },
   ]
-
-  let timerInterval: number | undefined
-
-  onMounted(() => {
-    timerInterval = setInterval(() => {
-      userStore.updateTimers()
-      userStore.timers.forEach(timer => {
-        if (timer.remaining === 0 && timer.isRunning) {
-          new Notification('Tickity', { body: `Timer "${timer.title}" has finished!` })
-          userStore.pauseTimer(timer.id)
-        }
-      })
-    }, 1000)
-    Notification.requestPermission()
-  })
-
-  onUnmounted(() => {
-    clearInterval(timerInterval)
-  })
 
   function addTimer(title: string, duration: number) {
     userStore.addTimer(title, duration)
@@ -65,22 +47,15 @@
       </button>
     </NavigationTitle>
 
-    <Modal v-if="isModalOpen" @click="isModalOpen = false">
-      <VStack class="modal-content" @click.stop>
-        <CardTitle title="Create a Custom Timer" icon="solar:clock-circle-line-duotone" />
-        <input type="text" v-model="customTimerTitle" placeholder="Timer Title" />
-        <input type="number" v-model="customTimerDuration" placeholder="Duration (minutes)" />
-        <button @click="addCustomTimer">Add Timer</button>
-      </VStack>
-    </Modal>
+    <RunningTimers />
 
     <Card v-if="userStore.timers.length > 0">
       <CardTitle
-        title="Running Timers"
+        title="All Timers"
         icon="solar:hourglass-line-duotone"
       />
 
-      <VStack>
+      <Grid class="spaced">
         <InteriorItem
           v-for="timer in userStore.timers"
           :key="timer.id"
@@ -104,8 +79,19 @@
             </button>
           </HStack>
         </InteriorItem>
-      </VStack>
+      </Grid>
     </Card>
+
+    <Modal v-if="isModalOpen" @click="isModalOpen = false">
+      <VStack class="modal-content" @click.stop>
+        <CardTitle title="Create a Custom Timer" icon="solar:clock-circle-line-duotone" />
+        <input type="text" v-model="customTimerTitle" placeholder="Timer Title" />
+        <input type="number" v-model="customTimerDuration" placeholder="Duration (minutes)" />
+        <button @click="addCustomTimer">Add Timer</button>
+      </VStack>
+    </Modal>
+
+    
 
     <Card>
       <CardTitle
