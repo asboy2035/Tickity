@@ -3,10 +3,13 @@
   import NavigationTitle from '@/components/navigation/NavigationTitle.vue'
   import NavBar from '@/components/premade/navbar/NavBar.vue'
   import createGlobe from 'cobe'
-  import {onMounted, ref, watch} from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   import Card from '@/components/layout/Card.vue'
+  import { useUserStore } from '@/stores/user'
+
   const canvasRef = ref<HTMLCanvasElement | null>(null)
   const isDarkMode = ref(0)
+  const userStore = useUserStore()
 
   let phi = 0
   let theta = 0.25
@@ -15,7 +18,7 @@
   let targetVelocity = 0.0015
   let isDragging = false
 
-  let globe: any  = null
+  let globe: any = null
 
   const createGlobeInstance = () => {
     if (globe) globe.destroy()
@@ -24,6 +27,11 @@
     const devicePixelRatio = window.devicePixelRatio || 1
     const width = canvas.offsetWidth * devicePixelRatio
     const height = canvas.offsetHeight * devicePixelRatio
+
+    const markers = userStore.enabledClocks.map(clock => ({
+      location: [clock.coordinates.lat, clock.coordinates.lon],
+      size: 0.1,
+    }))
 
     globe = createGlobe(canvas, {
       devicePixelRatio: devicePixelRatio,
@@ -38,10 +46,8 @@
       baseColor: isDarkMode.value == 1 ? [0.32, 0.14, 0.93] : [0.42, 0.33, 0.7], // Dark : Light colors
       markerColor: [0.63, 0.49, 0.02],
       glowColor: [0.49, 0.43, 0.73],
-      markers: [
-        { location: [44.84685, 0.62871], size: 0.1 }, // Bordeaux
-      ],
-      onRender: (state) => {
+      markers,
+      onRender: state => {
         if (!isDragging) {
           velocity = targetVelocity
         }
@@ -49,7 +55,7 @@
         velocity *= 0.95
         state.phi = phi
         state.theta = theta
-      }
+      },
     })
   }
 
@@ -57,18 +63,22 @@
 
   if (window.matchMedia) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    mediaQuery.addEventListener('change', (e) => {
+    mediaQuery.addEventListener('change', e => {
       isDarkMode.value = e.matches ? 1 : 0
     })
   }
 
   onMounted(() => {
     createGlobeInstance()
-    const canvas = document.getElementById("globe")
+    const canvas = document.getElementById('globe')
 
     watch(isDarkMode, () => {
       createGlobeInstance()
     })
+
+    watch(() => userStore.enabledClocks, () => {
+      createGlobeInstance()
+    }, { deep: true })
 
     // Mouse drag listeners
     const onPointerDown = (e: PointerEvent) => {
