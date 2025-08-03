@@ -24,8 +24,9 @@
     align-items: center
     margin-top: auto
 
-  .navBar
-    --interior-radius: 2rem
-    flex-direction: row
-    z-index: 20
+    .navBar
+      --interior-radius: 2rem
+      padding: 0.75rem
+      flex-direction: row
+      z-index: 20
 </style>

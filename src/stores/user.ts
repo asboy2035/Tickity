@@ -10,10 +10,15 @@ export interface Timer {
 }
 
 export const useUserStore = defineStore('user', {
-  state: () => ({
-    enabledClocks: [] as Clock[],
-    timers: [] as Timer[],
-  }),
+  state: () => {
+    const savedClocks = localStorage.getItem('enabledClocks')
+    const savedTimers = localStorage.getItem('timers')
+
+    return {
+      enabledClocks: savedClocks ? JSON.parse(savedClocks) : [] as Clock[],
+      timers: savedTimers ? JSON.parse(savedTimers) : [] as Timer[],
+    }
+  },
   
   getters: {
     runningTimers(): Timer[] {
@@ -37,10 +42,12 @@ export const useUserStore = defineStore('user', {
     addClock(clock: Clock) {
       if (!this.enabledClocks.find(c => c.name === clock.name)) {
         this.enabledClocks.push(clock)
+        localStorage.setItem('enabledClocks', JSON.stringify(this.enabledClocks))
       }
     },
     removeClock(clock: Clock) {
       this.enabledClocks = this.enabledClocks.filter(c => c.name !== clock.name)
+      localStorage.setItem('enabledClocks', JSON.stringify(this.enabledClocks))
     },
     addTimer(title: string, duration: number) {
       const newTimer: Timer = {
@@ -51,20 +58,24 @@ export const useUserStore = defineStore('user', {
         isRunning: false,
       }
       this.timers.push(newTimer)
+      localStorage.setItem('timers', JSON.stringify(this.timers))
     },
     removeTimer(id: number) {
       this.timers = this.timers.filter(t => t.id !== id)
+      localStorage.setItem('timers', JSON.stringify(this.timers))
     },
     startTimer(id: number) {
       const timer = this.timers.find(t => t.id === id)
       if (timer) {
         timer.isRunning = true
+        localStorage.setItem('timers', JSON.stringify(this.timers))
       }
     },
     pauseTimer(id: number) {
       const timer = this.timers.find(t => t.id === id)
       if (timer) {
         timer.isRunning = false
+        localStorage.setItem('timers', JSON.stringify(this.timers))
       }
     },
     updateTimers() {
@@ -75,10 +86,13 @@ export const useUserStore = defineStore('user', {
           timer.isRunning = false
         }
       })
+      localStorage.setItem('timers', JSON.stringify(this.timers))
     },
     clearData() {
       this.enabledClocks = []
       this.timers = []
+      localStorage.removeItem('enabledClocks')
+      localStorage.removeItem('timers')
     },
   },
 })

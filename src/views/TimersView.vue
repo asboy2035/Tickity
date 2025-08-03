@@ -83,15 +83,17 @@
     </Card>
 
     <Modal v-if="isModalOpen" @click="isModalOpen = false">
-      <VStack class="modal-content" @click.stop>
-        <CardTitle title="Create a Custom Timer" icon="solar:clock-circle-line-duotone" />
+      <VStack @click.stop>
+        <CardTitle title="Create Timer" icon="solar:clock-circle-line-duotone" />
         <input type="text" v-model="customTimerTitle" placeholder="Timer Title" />
         <input type="number" v-model="customTimerDuration" placeholder="Duration (minutes)" />
-        <button @click="addCustomTimer">Add Timer</button>
+
+        <button @click="addCustomTimer">
+          <Icon icon="solar:alarm-add-line-duotone" />
+          Add Timer
+        </button>
       </VStack>
     </Modal>
-
-    
 
     <Card>
       <CardTitle

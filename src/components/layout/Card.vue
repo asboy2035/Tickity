@@ -74,13 +74,6 @@
     &::after
       opacity: 0.8
 
-    .cardShadowContainer
-      opacity: 0.4
-
-      .cardShadow
-        border-width: 1rem
-
-
   ::v-deep(img)
     max-width: 100%
     border-radius: 0.75rem

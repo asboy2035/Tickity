@@ -44,9 +44,9 @@
       diffuse: 1.4,
       mapSamples: 20000,
       mapBrightness: 6,
-      baseColor: isDarkMode.value == 1 ? [0.32, 0.14, 0.93] : [0.42, 0.33, 0.7], // Dark : Light colors
+      baseColor: isDarkMode.value == 1 ? [0.61, 0.05, 0.35] : [0.6, 0.15, 0.39], // Dark : Light colors
       markerColor: [0.63, 0.49, 0.02],
-      glowColor: [0.49, 0.43, 0.73],
+      glowColor: [0.77, 0.32, 0.56],
       markers,
       onRender: state => {
         if (!isDragging) {

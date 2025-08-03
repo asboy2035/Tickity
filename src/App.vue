@@ -10,7 +10,7 @@
   <h1 class="hidden">Your CSS is disabled!</h1>
   <img
     id="siteBackground"
-    src="@/visuals/PageBackground.svg"
+    src="/SiteBackground.svg"
     alt="Background" aria-hidden="true"
   />
 
