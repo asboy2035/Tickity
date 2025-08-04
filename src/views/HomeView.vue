@@ -14,11 +14,19 @@
   import Modal from '@/components/layout/Modal.vue'
   import { useClocksStore } from '@/stores/clocks'
   import HStack from '@/components/layout/HStack.vue'
+  import VStack from '@/components/layout/VStack.vue'
   import RunningTimers from '@/components/premade/RunningTimers.vue'
 
   const userStore = useUserStore()
   const clocksStore = useClocksStore()
-  const isModalOpen = ref(false)
+  const isAddClockModalOpen = ref(false)
+  const isAddCustomClockModalOpen = ref(false)
+
+  const newClockName = ref('')
+  const newClockContinent = ref('Africa')
+  const newClockGmtOffset = ref(0)
+
+  const continents = ['Africa', 'Asia', 'Australia', 'Europe', 'North America', 'South America']
 
   const clocksByContinent = computed(() => {
     const continents: Record<string, Clock[]> = {}
@@ -41,6 +49,26 @@
     userStore.addClock(clock)
   }
 
+  function addCustomClock() {
+    if (newClockName.value) {
+      clocksStore.addClock({
+        name: newClockName.value,
+        continent: newClockContinent.value,
+        gmtOffset: newClockGmtOffset.value
+      })
+      userStore.addClock({
+        name: newClockName.value,
+        continent: newClockContinent.value,
+        gmtOffset: newClockGmtOffset.value,
+        coordinates: { lat: 0, lon: 0 }
+      })
+      newClockName.value = ''
+      newClockContinent.value = 'Africa'
+      newClockGmtOffset.value = 0
+      isAddCustomClockModalOpen.value = false
+    }
+  }
+
   function deleteClock(clock: Clock) {
     userStore.removeClock(clock)
   }
@@ -49,15 +77,21 @@
 <template>
   <ContentView id="homeView">
     <NavigationTitle title="Tickity">
-      <button @click="isModalOpen = !isModalOpen">
+      <button @click="isAddClockModalOpen = !isAddClockModalOpen">
+        <Icon icon="solar:clock-circle-line-duotone" />
+      </button>
+      <button @click="isAddCustomClockModalOpen = !isAddCustomClockModalOpen">
         <Icon icon="solar:pen-new-square-line-duotone" />
       </button>
     </NavigationTitle>
 
     <RunningTimers />
 
-    <Modal v-if="isModalOpen" @click="isModalOpen = false">
-      <CardTitle title="Add a Clock" icon="solar:clock-circle-line-duotone" />
+    <Modal v-if="isAddClockModalOpen" @click="isAddClockModalOpen = false">
+      <CardTitle
+        title="Presets"
+        icon="solar:clock-circle-line-duotone"
+      />
 
       <HStack class="clockList" @click.stop>
         <button
@@ -69,6 +103,38 @@
           {{ clock.name }}
         </button>
       </HStack>
+
+      <button class="fullWidth">
+        <Icon icon="solar:check-read-line-duotone" />
+        Done
+      </button>
+    </Modal>
+
+    <Modal v-if="isAddCustomClockModalOpen" @click="isAddCustomClockModalOpen = false">
+      <CardTitle
+        title="Create Custom Clock"
+        icon="solar:pen-new-square-line-duotone"
+      />
+
+      <VStack @click.stop class="fullWidth">
+        <input type="text" placeholder="Name" v-model="newClockName" />
+        <select v-model="newClockContinent">
+          <option v-for="continent in continents" :key="continent" :value="continent">
+            {{ continent }}
+          </option>
+        </select>
+        <input type="number" placeholder="GMT Offset" v-model="newClockGmtOffset" />
+
+        <HStack class="fullWidth autoSpace">
+          <button @click="isAddCustomClockModalOpen = false" class="transparent">
+            Cancel
+          </button>
+          <button @click="addCustomClock">
+            <Icon icon="solar:pen-new-square-line-duotone" />
+            Create
+          </button>
+        </HStack>
+      </VStack>
     </Modal>
 
     <Card v-if="userStore.enabledClocks.length === 0">

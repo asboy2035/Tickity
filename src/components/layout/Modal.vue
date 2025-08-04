@@ -5,7 +5,7 @@
 
 <template>
   <FullScreenCover class="modalCover">
-    <Card class="modalCard">
+    <Card class="modalCard spaced">
       <slot />
     </Card>
   </FullScreenCover>
@@ -14,7 +14,8 @@
 <style scoped lang="sass">
   .modalCard
     width: fit-content
-    max-width: 50rem
+    min-width: 20rem
+    max-width: 40rem
 
   .modalCover
     z-index: 5

@@ -50,7 +50,6 @@ export const useClocksStore = defineStore('clocks', {
       { "name": "Manila", "continent": "Asia", "gmtOffset": 8, "coordinates": { "lat": 14.5995, "lon": 120.9842 } },
       { "name": "Montreal", "continent": "North America", "gmtOffset": -4, "coordinates": { "lat": 45.5019, "lon": -73.5673 } },
       { "name": "Johannesburg", "continent": "Africa", "gmtOffset": 2, "coordinates": { "lat": -26.2041, "lon": 28.0473 } },
-      { "name": "Ho Chi Minh City", "continent": "Asia", "gmtOffset": 7, "coordinates": { "lat": 10.776, "lon": 106.7011 } },
       { "name": "Vancouver", "continent": "North America", "gmtOffset": -7, "coordinates": { "lat": 49.2827, "lon": -123.1207 } },
       { "name": "Copenhagen", "continent": "Europe", "gmtOffset": 2, "coordinates": { "lat": 55.6761, "lon": 12.5683 } },
       { "name": "Accra", "continent": "Africa", "gmtOffset": 0, "coordinates": { "lat": 5.6037, "lon": -0.187 } },
@@ -58,4 +57,13 @@ export const useClocksStore = defineStore('clocks', {
       { "name": "Vienna", "continent": "Europe", "gmtOffset": 2, "coordinates": { "lat": 48.2082, "lon": 16.3738 } }
     ] as Clock[],
   }),
+  actions: {
+    addClock(clock: Omit<Clock, 'coordinates'>) {
+      this.clocks.push({
+        ...clock,
+        coordinates: { lat: 0, lon: 0 }
+      });
+    }
+  },
+  persist: true
 })

@@ -11,7 +11,8 @@
 
   const emit = defineEmits(['delete'])
 
-  const time = ref<string>('--:--:--')
+  const time = ref<string>('--:--')
+  let timeout: number
   let interval: number
 
   onMounted(() => {
@@ -19,13 +20,24 @@
       const now = new Date()
       const utcTime = now.getTime() + now.getTimezoneOffset() * 60000
       const cityTime = new Date(utcTime + props.clock.gmtOffset * 3600000)
-      time.value = cityTime.toLocaleTimeString('en-GB')
+      time.value = cityTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
     }
-    update()
-    interval = setInterval(update, 1000)
+
+    const startMinuteSync = () => {
+      update()
+      const now = new Date()
+      const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds())
+      timeout = setTimeout(() => {
+        update()
+        interval = setInterval(update, 60000)
+      }, delay)
+    }
+
+    startMinuteSync()
   })
 
   onUnmounted(() => {
+    clearTimeout(timeout)
     clearInterval(interval)
   })
 
