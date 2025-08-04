@@ -17,11 +17,11 @@
       text="Globe"
     />
 
-<!--    <NavigationButton-->
-<!--      link="/friends"-->
-<!--      icon="solar:users-group-two-rounded-line-duotone"-->
-<!--      text="Friends"-->
-<!--    />-->
+    <NavigationButton
+      link="/friends"
+      icon="solar:users-group-two-rounded-line-duotone"
+      text="Friends"
+    />
 
     <NavigationButton
       link="/timers"
