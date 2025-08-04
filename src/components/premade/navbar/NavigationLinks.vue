@@ -12,17 +12,23 @@
     />
 
     <NavigationButton
-      link="/map"
-      icon="solar:map-line-duotone"
-      text="Map"
+      link="/globe"
+      icon="solar:global-line-duotone"
+      text="Globe"
     />
 
-    <NavigationButton 
-      link="/timers" 
+<!--    <NavigationButton-->
+<!--      link="/friends"-->
+<!--      icon="solar:users-group-two-rounded-line-duotone"-->
+<!--      text="Friends"-->
+<!--    />-->
+
+    <NavigationButton
+      link="/timers"
       icon="solar:hourglass-line-line-duotone"
-      text="Timers" 
+      text="Timers"
     />
-    
+
     <NavigationButton
       link="/settings"
       icon="solar:settings-line-duotone"

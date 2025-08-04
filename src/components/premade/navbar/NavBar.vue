@@ -23,6 +23,7 @@
     z-index: 19
     align-items: center
     margin-top: auto
+    margin-bottom: env(safe-area-inset-bottom)
 
     .navBar
       --interior-radius: 2rem

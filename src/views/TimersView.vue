@@ -60,23 +60,25 @@
           v-for="timer in userStore.timers"
           :key="timer.id"
         >
-          <h3>
-            {{ timer.title }}
-            {{ Math.floor(timer.remaining / 60) }}:{{ ('0' + (timer.remaining % 60)).slice(-2) }}
-          </h3>
+          <HStack class="fullWidth autoSpace">
+            <VStack>
+              <p class="light">{{ timer.title }}</p>
+              <h2>{{ Math.floor(timer.remaining / 60) }}:{{ ('0' + (timer.remaining % 60)).slice(-2) }}</h2>
+            </VStack>
 
-          <HStack>
-            <button @click="userStore.startTimer(timer.id)" v-if="!timer.isRunning">
-              <Icon icon="solar:play-line-duotone" />
-            </button>
+            <HStack>
+              <button @click="userStore.startTimer(timer.id)" v-if="!timer.isRunning">
+                <Icon icon="solar:play-line-duotone" />
+              </button>
 
-            <button @click="userStore.pauseTimer(timer.id)" v-if="timer.isRunning">
-              <Icon icon="solar:pause-line-duotone" />
-            </button>
+              <button @click="userStore.pauseTimer(timer.id)" v-if="timer.isRunning">
+                <Icon icon="solar:pause-line-duotone" />
+              </button>
 
-            <button @click="userStore.removeTimer(timer.id)">
-              <Icon icon="solar:trash-bin-minimalistic-line-duotone" />
-            </button>
+              <button @click="userStore.removeTimer(timer.id)">
+                <Icon icon="solar:trash-bin-minimalistic-line-duotone" />
+              </button>
+            </HStack>
           </HStack>
         </InteriorItem>
       </Grid>

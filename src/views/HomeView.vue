@@ -49,7 +49,7 @@
 <template>
   <ContentView id="homeView">
     <NavigationTitle title="Tickity">
-      <button @click="isModalOpen = true">
+      <button @click="isModalOpen = !isModalOpen">
         <Icon icon="solar:pen-new-square-line-duotone" />
       </button>
     </NavigationTitle>

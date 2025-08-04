@@ -115,8 +115,8 @@
 </script>
 
 <template>
-  <ContentView class="mapView">
-    <NavigationTitle title="Map" />
+  <ContentView class="globeView">
+    <NavigationTitle title="Globe" />
 
     <RunningTimers />
 
